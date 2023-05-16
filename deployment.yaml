@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oesfrontend-deployment
+  labels:
+    app: oesfrontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oesfrontend
+  template:
+    metadata:
+      labels:
+        app: oesfrontend
+    spec:
+      containers:
+        - name: oesfrontend
+          image: shivamdogaya/oesfrontend:1.0
+          ports:
+            - containerPort: 3000
+---          
+apiVersion: v1
+kind: Service
+metadata:
+  name: oesfrontend-service
+spec:
+  selector:
+    app: oesfrontend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 31000
+  type: LoadBalancer
